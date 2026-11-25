@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>SharedTabs: before you start</title>
+<link rel="stylesheet" href="ui.css">
+<body>
+  <main class="narrow">
+    <div class="brand"><img src="icons/48.png" alt=""><b>Shared<i>Tabs</i></b></div>
+    <div>
+      <h1>Before you start</h1>
+      <p class="lead" style="margin-top:12px">SharedTabs lets AI agent software on this computer use Chrome tabs you choose, signed in as you. It does nothing until you agree below.</p>
+    </div>
+    <section class="card">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>What agents can get</h2>
+      <p>From tabs you share, and tabs agents open, on sites you allow:</p>
+      <ul class="plain">
+        <li>Page text, page outlines and screenshots, including anything personal on the page</li>
+        <li>Titles and addresses of those tabs</li>
+        <li>Console messages and network request addresses, when an agent asks for them</li>
+        <li>Files you allow in Settings, which agents can upload to those sites</li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Where it goes</h2>
+      <p>Straight to the agent on this computer, through a small bridge app that you install. <strong>Your agent may then send it to its AI provider or elsewhere.</strong> That is covered by your agent's own terms, so check them. The makers of SharedTabs receive nothing: there is no account, server, analytics or advertising.</p>
+    </section>
+    <div class="bento">
+      <section class="card">
+        <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4l14 7-6 2-2 6z"/></svg>What agents can do</h2>
+        <p>Click, type, navigate, drag and upload in those tabs. They can make mistakes, and a web page can try to mislead them, so watch what they do with anything important. Stop is always in the toolbar popup.</p>
+      </section>
+      <section class="card">
+        <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8M6.500 6.500a8 8 0 1 0 11 0"/></svg>What starts off</h2>
+        <p>No sites are allowed, no tabs are shared, and file uploads are off. You choose each one in Settings. Banks, password managers and similar sites are blocked by default, but the list can't cover every one.</p>
+      </section>
+    </div>
+    <section class="card cta">
+      <div class="row gap" style="justify-content:flex-start;flex-wrap:wrap">
+        <button id="agree" class="primary">I agree, turn it on</button>
+        <button id="decline">Not now</button>
+      </div>
+      <p id="done" class="small" role="status" style="margin:10px 0 0"></p>
+    </section>
+  </main>
+  <script type="module" src="welcome.js"></script>
+  <script type="module" src="glow.js"></script>
+</body>
+</html>

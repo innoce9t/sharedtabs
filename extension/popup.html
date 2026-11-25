@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>SharedTabs</title>
+<link rel="stylesheet" href="ui.css">
+<body class="popup">
+  <div class="row">
+    <div class="brand"><img src="icons/48.png" alt=""><b>Shared<i>Tabs</i></b></div>
+    <span id="link" class="chip"></span>
+  </div>
+  <p id="detail" class="small warn card" hidden></p>
+  <a id="bridge" class="small" target="_blank" hidden>Get the bridge app</a>
+  <button id="setup" class="primary" hidden>Finish setup</button>
+  <div id="old" class="card cta" hidden>
+    <strong>Bridge update available</strong>
+    <p id="oldtext" class="small" style="margin:4px 0 8px">Double-click <strong>Update SharedTabs</strong> in your bridge folder, or ask your AI agent to update it.</p>
+    <button id="oldbtn" class="primary">Update bridge</button> <a id="oldlink" class="small" target="_blank">Get the new version</a>
+  </div>
+  <div class="card stack">
+    <button id="share" class="primary"></button>
+    <button id="stop" class="stop"></button>
+    <p id="note" class="small" style="margin:0"></p>
+    <button id="allow" hidden></button>
+  </div>
+  <div id="shared" class="card" hidden>
+    <h2><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="12" height="12" rx="3"/><rect x="9" y="9" width="12" height="12" rx="3"/></svg>Shared tabs</h2>
+    <ul id="tabs"></ul>
+  </div>
+  <div class="card row small">
+    <span class="muted">Site permission</span><strong id="perm"></strong>
+  </div>
+  <div class="row">
+    <button id="panel" class="grow">Open side panel</button>
+    <a class="small" href="options.html" target="_blank">Settings</a>
+  </div>
+  <footer class="foot small"><a id="coffee" href="https://ahsan.live/sharedtabs/#coffee" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4zM16 10h1.500a2.500 2.500 0 0 1 0 5H16M8 6V4M12 6V4"/></svg>Buy me a coffee</a><a id="by" href="https://ahsan.live/" target="_blank" rel="noreferrer">Built by Ahsan Nawazish</a></footer>
+  <script type="module" src="popup.js"></script>
+  <script type="module" src="glow.js"></script>
+</body>
+</html>

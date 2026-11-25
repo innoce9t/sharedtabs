@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>SharedTabs</title>
+<link rel="stylesheet" href="ui.css">
+<body class="panel">
+  <header class="row">
+    <div class="brand"><img src="icons/48.png" alt=""><b>Shared<i>Tabs</i></b></div>
+    <span id="link" class="chip"></span>
+  </header>
+  <div id="old" class="card cta" hidden>
+    <strong>Bridge update available</strong>
+    <p id="oldtext" class="small" style="margin:4px 0 8px">Double-click <strong>Update SharedTabs</strong> in your bridge folder, or ask your AI agent to update it.</p>
+    <button id="oldbtn" class="primary">Update bridge</button> <a id="oldlink" class="small" target="_blank">Get the new version</a>
+  </div>
+  <section class="card stack">
+    <div class="row gap">
+      <button id="share" class="grow primary"></button>
+      <button id="stop" class="stop"></button>
+    </div>
+    <div class="row small"><span id="perm" class="muted"></span><a href="options.html" target="_blank">Settings</a></div>
+    <p id="note" class="small warn" role="status" style="margin:0"></p>
+  </section>
+  <section class="card">
+    <div class="row"><h2><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>Recording</h2><span class="small muted" id="rec-state">Not recording</span></div>
+    <div class="row gap"><button id="rec" class="grow"></button><button id="save" disabled>Save GIF</button></div>
+  </section>
+  <section class="card">
+    <h2><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="12" height="12" rx="3"/><rect x="9" y="9" width="12" height="12" rx="3"/></svg>Shared tabs</h2>
+    <ul id="tabs"></ul>
+  </section>
+  <section class="card">
+    <h2><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>What agents did</h2>
+    <ul id="log" class="log"></ul>
+  </section>
+  <footer class="foot small"><a id="coffee" href="https://ahsan.live/sharedtabs/#coffee" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4zM16 10h1.500a2.500 2.500 0 0 1 0 5H16M8 6V4M12 6V4"/></svg>Buy me a coffee</a><a id="by" href="https://ahsan.live/" target="_blank" rel="noreferrer">Built by Ahsan Nawazish</a></footer>
+  <script type="module" src="sidepanel.js"></script>
+  <script type="module" src="glow.js"></script>
+</body>
+</html>

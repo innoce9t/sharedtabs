@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>SharedTabs settings</title>
+<link rel="stylesheet" href="ui.css">
+<body>
+  <main>
+    <div class="brand"><img src="icons/48.png" alt=""><b>Shared<i>Tabs</i></b></div>
+    <div>
+      <h1>Settings</h1>
+      <p class="lead">Choose what AI agents may use in this browser.</p>
+    </div>
+    <div class="bento">
+      <div>
+        <fieldset id="modes" class="card">
+          <legend><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Site permission</legend>
+          <p class="desc">Which sites agents can use in shared tabs.</p>
+          <div class="choices">
+          <label><input type="radio" name="mode" value="all"> <span><strong>Allow all</strong><br><span class="small muted">Every site except the blocked ones.</span></span></label>
+          <label><input type="radio" name="mode" value="specific"> <span><strong>Allow specific</strong><br><span class="small muted">Only the sites you list.</span></span></label>
+          <label><input type="radio" name="mode" value="session"> <span><strong>Allow until Chrome closes</strong><br><span class="small muted">Every site except the blocked ones, then back to Not allowed.</span></span></label>
+          <label><input type="radio" name="mode" value="none"> <span><strong>Not allowed</strong><br><span class="small muted">Agents can't use any site.</span></span></label>
+          </div>
+          <p id="warn" class="small warn" hidden>Agents won't ask about sites. If people can message your agent from other apps, this covers their requests too. Agents still only see tabs you share or that they open.</p>
+        </fieldset>
+        <div id="specific" class="card" hidden>
+          <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg>Allowed sites</h2>
+          <p class="desc">One per line. <code>example.com</code> includes subdomains. The blocked list still wins.</p>
+          <textarea id="allowed" class="short" spellcheck="false" aria-label="Allowed sites"></textarea>
+        </div>
+        <div class="card">
+          <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.500-1-8-4-8-9V6z"/></svg>Blocked sites</h2>
+          <p class="desc">Agents can never use these. One per line: <code>example.com</code> includes subdomains, <code>*</code> matches anything, and <code>!example.com</code> makes an exception. The starting list can't cover every bank, so add yours.</p>
+          <textarea id="blocked" spellcheck="false" aria-label="Blocked sites"></textarea>
+          <p><button id="reset">Restore default blocked sites</button></p>
+        </div>
+      </div>
+      <div>
+        <fieldset id="uploads" class="card">
+          <legend><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>File uploads</legend>
+          <p class="desc">Files go only to sites you allow, up to 20 MB.</p>
+          <div class="choices">
+          <label><input type="radio" name="uploads" value="off"> <span><strong>Off</strong><br><span class="small muted">Agents can't upload files.</span></span></label>
+          <label><input type="radio" name="uploads" value="folders"> <span><strong>Only from these folders</strong><br><span class="small muted">Any type of file in the folders you list, and their subfolders.</span></span></label>
+          <label><input type="radio" name="uploads" value="any"> <span><strong>Any file</strong><br><span class="small muted">Any file on this PC, except the protected ones.</span></span></label>
+          </div>
+          <p class="small">Keys, password files and account tokens are never uploaded. Neither is anything in system or app data folders, unless you list a folder inside them.</p>
+        </fieldset>
+        <div id="uploadFolders" class="card" hidden>
+          <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>Upload folders</h2>
+          <p class="desc">One full path per line, such as <code>C:\Users\me\Documents</code>.</p>
+          <textarea id="folders" class="short" spellcheck="false" aria-label="Upload folders"></textarea>
+        </div>
+        <div class="card">
+          <label class="switch"><input type="checkbox" id="indicator"> <span><strong>On-page indicator</strong><br><span class="small muted">Show a border and pointer in tabs while an agent uses them.</span></span></label>
+        </div>
+        <!-- store:off -->
+        <div class="card">
+          <label class="switch"><input type="checkbox" id="evaluate"> <span><strong>JavaScript</strong><br><span class="small muted">Let agents run JavaScript on allowed sites. This bypasses the password and card field protections. Leave it off unless you need it.</span></span></label>
+        </div>
+        <!-- store:end -->
+        <p class="small" style="margin:0 24px"><a href="welcome.html">What agents can get and do</a></p>
+      </div>
+    </div>
+    <div class="card bar">
+      <button id="save" class="primary">Save lists</button>
+      <span id="done" class="small muted" role="status">Choices apply at once. Lists apply when you save.</span>
+    </div>
+  </main>
+  <script type="module" src="options.js"></script>
+  <script type="module" src="glow.js"></script>
+</body>
+</html>

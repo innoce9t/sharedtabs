@@ -1,0 +1,3 @@
+# Builds and signatures depend on exact bytes, so line endings never change.
+* text=auto eol=lf
+*.png binary

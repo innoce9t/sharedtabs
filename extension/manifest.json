@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "SharedTabs",
+  "version": "0.8.2",
+  "description": "Let AI agents on your computer use only the Chrome tabs you share, on sites you allow. Works with any local MCP agent.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwha5Sod/yxnt1Poozy1Aym0YJqsbPND9SS0Pqq9HIxCDUg21ZkXkENHuSKD8OMJc5ffkBX7YnmP0ZOkeVve1FDNVvYkqTrozCxj8hiP5PMX7Tnnq41WFYKj4ulMZwCTGzSY20oY3aYOxoA8k3wGXWRTz/k13XPPgBmjwb/afjfKJSIRnO4nhIdkwNSjYKWxIlLzEihGbolLvAr6OuxEI2JxKFAWgRMVzcQ2hB78TE/HcPs90Mwwjt7/fZ1gqLE6DrRs/rGDYbsss4N6JZ9PmVzJ9Q3NoLYiYUxXl0uo4YwrOPGneaSDKC/x6t9d74+R7qML70LSSWSHSFsFSFnvZfQIDAQAB",
+  "minimum_chrome_version": "120",
+  "incognito": "not_allowed",
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "scripting",
+    "webNavigation",
+    "debugger",
+    "nativeMessaging",
+    "storage",
+    "alarms",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "SharedTabs"
+  },
+  "options_page": "options.html",
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
+}

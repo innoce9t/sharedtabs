@@ -1,0 +1,187 @@
+{{HEAD}}
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav"><div class="wrap">
+    <a class="brand" href="/sharedtabs/"><img src="{{img/icon.png}}" alt="" width="34" height="34"><span>Shared<i>Tabs</i></span></a>
+    <nav aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#control">Control</a>
+      <a href="#setup">Set up</a>
+      <a href="/sharedtabs/privacy/">Privacy</a>
+      <a class="btn main small" href="#setup">Get started</a>
+    </nav>
+  </div><div class="progress" aria-hidden="true"></div></header>
+
+  <main id="main">
+    <div class="wrap hero">
+      <h1><span class="shimmer">AI agents, only in the tabs you share</span></h1>
+      <p class="lead">SharedTabs lets an AI agent on your own computer work in the Chrome tabs you choose, signed in as you, and nothing else.</p>
+      <div class="actions">
+        {{STORE_BUTTON}}
+        <a class="btn" href="{{ZIP}}" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg>Download the bridge</a>
+      </div>
+      <p class="note">Free. Windows 10 or 11, Chrome, and Node.js 20 or newer. No administrator rights.</p>
+      <section class="demo" id="demo" aria-label="Interactive demo">
+        <div class="d-tabs" role="group" aria-label="Choose which tabs to share">
+          <button type="button" class="d-tab" data-tab="jobs"><span class="d-dot"></span><span><b>Job form</b><small></small></span></button>
+          <button type="button" class="d-tab" data-tab="docs"><span class="d-dot"></span><span><b>Docs</b><small></small></span></button>
+          <button type="button" class="d-tab" data-tab="mail"><span class="d-dot"></span><span><b>Mail</b><small></small></span></button>
+          <button type="button" class="d-tab" data-tab="bank"><span class="d-dot"></span><span><b>Bank</b><small></small></span></button>
+        </div>
+        <div class="d-body">
+          <div class="d-view" aria-hidden="true">
+            <div class="d-bar"><span>What your agent sees</span><b class="d-url">jobs.example</b></div>
+            <div class="d-stage">
+              <div class="d-page" data-page="jobs">
+                <strong class="d-h">Marketing Manager</strong><span class="d-sub">Example Company, full time</span>
+                <span class="d-label">Full name</span><div class="d-field" data-f="name"></div>
+                <span class="d-label">City</span><div class="d-field" data-f="city"></div>
+                <span class="d-label">Years of experience</span><div class="d-field" data-f="years"></div>
+                <div class="d-btn">Review application</div>
+              </div>
+              <div class="d-page" data-page="docs">
+                <strong class="d-h">Team handbook</strong><span class="d-sub">Updated today</span>
+                <p class="d-line">Support hours are now 9 to 5.</p>
+                <p class="d-line">Send travel requests two weeks ahead.</p>
+                <p class="d-line">The spring review starts in March.</p>
+                <p class="d-line">New starters get a laptop on day one.</p>
+              </div>
+              <div class="d-page" data-page="mail">
+                <strong class="d-h">Inbox</strong><span class="d-sub">3 unread</span>
+                <p class="d-line"><b>Sam</b> Lunch on Friday?</p>
+                <p class="d-line"><b>Library</b> Your book is ready</p>
+                <p class="d-line"><b>Alex</b> Photos from the trip</p>
+              </div>
+              <div class="d-page" data-page="bank"><strong class="d-h">Example Bank</strong><span class="d-sub">Accounts</span><p class="d-line">Current account</p><p class="d-line">Savings</p></div>
+              <div class="d-lock"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b></b></div>
+            </div>
+            <div class="d-pill">An agent is using this tab</div>
+            <div class="d-cursor"></div>
+          </div>
+          <div class="d-side">
+            <div class="d-row"><strong>You choose</strong><button type="button" class="btn small d-stop">Stop</button></div>
+            <div class="d-seg" role="group" aria-label="Sites agents may use">
+              <button type="button" data-mode="all">All sites</button>
+              <button type="button" data-mode="specific">Listed</button>
+              <button type="button" data-mode="none">None</button>
+            </div>
+            <p class="d-note"></p>
+            <strong>Ask the agent</strong>
+            <div class="d-asks">
+              <button type="button" data-ask="jobs">Fill in the job form</button>
+              <button type="button" data-ask="docs">Summarise the docs</button>
+              <button type="button" data-ask="mail">Read my mail</button>
+              <button type="button" data-ask="bank">Open my bank</button>
+            </div>
+            <strong>What happened</strong>
+            <ol class="d-log" role="log" aria-label="What happened" tabindex="0"></ol>
+          </div>
+        </div>
+        <div class="d-foot"><p class="note">A demo with made-up sites. Click a tab to share it or stop sharing it.</p><button type="button" class="btn small" id="motion"></button></div>
+      </section>
+    </div>
+
+    <section id="how"><div class="wrap">
+      <div class="head"><h2>How it works</h2><p class="lead">Two small parts. The extension lives in Chrome and decides what's allowed. The bridge connects it to your agent. No account, no server.</p></div>
+      <div class="flow">
+        <div><b>Your agent</b><span>Any agent that runs local MCP servers</span></div>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <div><b>Bridge</b><span>On your PC, private to your Windows account</span></div>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <div class="on"><b>Extension</b><span>Checks your rules before every action</span></div>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <div><b>Shared tabs</b><span>Only these. Other tabs stay invisible</span></div>
+      </div>
+      <div class="flowbar"><button type="button" class="btn small" data-send="yes">Send a request</button><button type="button" class="btn small" data-send="no">Try a tab that isn’t shared</button><p aria-live="polite"></p></div>
+    </div></section>
+
+    <section id="look"><div class="wrap">
+      <div class="head"><h2>The real thing</h2><p class="lead">A shared tab in Chrome, and the side panel that shows what agents did.</p></div>
+      <div class="look">
+        <div class="shot"><img src="{{img/job.webp}}" width="1400" height="1185" loading="lazy" alt="A job application form in Chrome with a blue border and a label saying an agent is using this tab"></div>
+        <div class="shot"><img src="{{img/panel.webp}}" width="760" height="1068" loading="lazy" alt="The SharedTabs side panel, showing it is connected, the shared tab, and a list of what agents did"></div>
+      </div>
+    </div></section>
+
+    <section id="control"><div class="wrap">
+      <div class="head"><h2>You stay in control</h2><p class="lead">Nothing is shared or allowed until you choose it.</p></div>
+      <div class="grid">
+        <div class="card pic c6"><div><h3><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Choose the sites</h3><p>All of them, only the ones you list, everything until Chrome closes, or none.</p></div><img src="{{img/modes.webp}}" width="1080" height="1446" loading="lazy" alt="Site permission options in SharedTabs settings, with Allow specific selected"></div>
+        <div class="card pic c6"><div><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>Choose the files</h3><p>Uploads start off. Allow only the folders you pick. Keys and password files are always refused.</p></div><img src="{{img/uploads.webp}}" width="1080" height="1330" loading="lazy" alt="File upload options in SharedTabs settings, with Only from these folders selected"></div>
+        <div class="card"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.500 8-8 9-4.500-1-8-4-8-9V6z"/></svg>Sensitive sites blocked</h3><p>Many banks, password managers and similar sites start out blocked. The list can't cover every one, so add yours.</p></div>
+        <div class="card"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Passwords stay yours</h3><p>Password, card and one-time code fields aren't read, and typing in them is refused. Best effort, based on how a page marks its fields.</p></div>
+        <div class="card"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8M6.500 6.500a8 8 0 1 0 11 0"/></svg>One Stop button</h3><p>Halts everything at once. A border shows when an agent is using a tab, and the side panel lists what it did.</p></div>
+      </div>
+    </div></section>
+
+    <section id="setup"><div class="wrap">
+      <div class="head"><h2>Set it up</h2><p class="lead">About five minutes. Or let your AI do most of it.</p></div>
+      <div class="grid">
+        <div class="c7">
+          <div class="stepbar"><span></span><div><i></i></div></div>
+          <ol class="steps">
+            <li><div><b>Install Node.js</b><p>Version 20 or newer, from <a href="https://nodejs.org">nodejs.org</a>. Choose LTS.</p></div></li>
+            <li><div><b>Download the bridge and unzip it</b><p>Somewhere permanent, such as <code>C:\Users\you\SharedTabs</code>. Don't run it inside the zip.</p></div></li>
+            <li><div><b>Double-click “Set up SharedTabs”</b><p>Answer <code>y</code> for each agent to connect. Windows may warn that the file came from the internet. Continue only if you downloaded it from here.</p></div></li>
+            <li><div><b>Add the extension to Chrome</b><p>{{STORE_STEP}} Its popup should say Connected.</p></div></li>
+            <li><div><b>Agree, and choose sites</b><p>Read the page that opens. Then pick which sites agents may use in Settings.</p></div></li>
+            <li><div><b>Restart your agent and share a tab</b><p>Click the SharedTabs icon, choose Share this tab, and ask your agent to summarise it.</p></div></li>
+          </ol>
+        </div>
+        <div class="c5 stack">
+          <div class="card cta" id="ai"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.800 5.200L19 10l-5.200 1.800L12 17l-1.800-5.200L5 10l5.200-1.800zM19 16l.8 2.200L22 19l-2.200.8L19 22l-.8-2.200L16 19l2.200-.8z"/></svg>Or ask your AI</h3><p>Give this to an agent that can run commands on your PC. Adding the extension, agreeing to its terms, choosing sites and sharing tabs stay with you.</p>
+            <pre id="prompt">Install the SharedTabs bridge for me on this PC.
+Download https://ahsan.live/sharedtabs/sharedtabs-bridge.zip
+Check that its SHA-256 is {{SHA}}
+Unzip it into a permanent folder in my user folder, then read INSTALL-WITH-AI.md inside it and follow it.
+Tell me what you are about to do, and ask me before you run setup or change any settings.</pre>
+            <div class="copy"><span class="note">Read it before you send it.</span><button class="btn small" data-copy="prompt" hidden>Copy</button></div>
+          </div>
+          <div class="card"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg>Download</h3><p>Bridge {{VERSION}}, {{SIZE}}. Contains readable source code and no installers.</p>
+            <div style="margin-top:16px"><a class="btn main" href="{{ZIP}}" download>Download the bridge</a></div>
+            <p class="hash">SHA-256 {{SHA}}</p>
+          </div>
+        </div>
+        <div class="card c12 coffee" id="coffee">
+          <svg class="cup" viewBox="0 0 64 64" aria-hidden="true">
+            <defs><clipPath id="cupin"><path d="M13 25h32v17a10 10 0 0 1-10 10H23a10 10 0 0 1-10-10z"/></clipPath></defs>
+            <rect class="cup-fill" clip-path="url(#cupin)" x="12" y="25" width="34" height="28"/>
+            <path d="M13 25h32v17a10 10 0 0 1-10 10H23a10 10 0 0 1-10-10zM45 29h4a6 6 0 0 1 0 13h-4"/>
+            <path class="steam" d="M22 18c-3-4 3-5 0-9"/><path class="steam" d="M30 18c-3-4 3-5 0-9"/><path class="steam" d="M38 18c-3-4 3-5 0-9"/>
+          </svg>
+          <div class="coffee-text">
+            <h3>Buy me a coffee</h3>
+            <p>SharedTabs is free. If it's useful to you, you can leave a tip. It's optional and unlocks nothing.</p>
+          </div>
+          <a class="btn main coffee-link" href="/coffee">Buy me a coffee</a>
+          <form class="coffee-form" novalidate>
+            <div class="coffee-amounts" role="group" aria-label="Amount">
+              <button type="button" data-quick="0" aria-pressed="false"></button>
+              <button type="button" data-quick="1" aria-pressed="false"></button>
+              <button type="button" data-quick="2" aria-pressed="false"></button>
+              <div class="coffee-own"><select id="coffee-currency" aria-label="Currency"></select><input id="coffee-amount" type="text" inputmode="numeric" autocomplete="off" maxlength="7" placeholder="Other"></div>
+            </div>
+            <button type="submit" class="btn main" disabled>Choose an amount</button>
+            <p class="note" role="status">You pay on Ziina's page. This site never sees your card.</p>
+          </form>
+        </div>
+      </div>
+    </div></section>
+
+    <section id="faq"><div class="wrap">
+      <div class="head"><h2>Good to know</h2></div>
+      <details><summary>Where does my data go?</summary><p>From Chrome straight to the agent on your computer. SharedTabs has no account, server, analytics or ads, and its makers receive nothing. Your agent may send what it reads to its AI provider, under that agent's own terms. See the <a href="/sharedtabs/privacy/">privacy policy</a>.</p></details>
+      <details><summary>Which agents work?</summary><p>It's been tested with Hermes Agent. Other agents that can run a local MCP server on Windows should work too. Setup can connect Hermes, Claude Desktop, Claude Code, Cursor and Codex when it finds them, and prints the settings for any other.</p></details>
+      <details><summary>Is it safe?</summary><p>It limits what an agent can reach, but agents make mistakes and web pages can try to trick them. Watch them with anything important, use Allow specific rather than Allow all, and leave uploads off until you need them. Anyone who can message your agent can ask it to use the tabs you share. Programs running under your Windows account could connect to the bridge, so run only software you trust.</p></details>
+      <details><summary>Why does Chrome show a debugging banner?</summary><p>Chrome shows it while an agent is clicking, typing or taking screenshots. That permission is how SharedTabs sends real input. Pressing Cancel on the banner stops agents.</p></details>
+      <details><summary>How do updates work?</summary><p>Chrome updates the extension. When the bridge needs updating, the popup says so. Nothing updates behind your back.</p></details>
+      <details><summary>Does it work on Mac or Linux?</summary><p>Not yet. Windows only.</p></details>
+      <details><summary>Can I use the code?</summary><p>Yes, for noncommercial purposes, with credit. The source is <a href="https://github.com/innoce9t/sharedtabs">on GitHub</a>. You may use the official app at work, but not sell it, offer it as a paid service or use changed copies commercially.</p></details>
+      <details><summary>How do I remove it?</summary><p>Double-click Remove SharedTabs, remove the extension in chrome://extensions, remove shared-tabs from your agent, and delete the folder.</p></details>
+    </div></section>
+  </main>
+{{FOOTER}}
+  <script defer src="{{gsap.js}}"></script>
+  <script type="module" src="{{site.js}}"></script>
+</body>
+</html>
