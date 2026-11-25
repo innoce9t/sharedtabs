@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Copy buttons, and the card glow that follows the mouse. The page works without either.
 for (const b of document.querySelectorAll('[data-copy]')) {
   b.hidden = false;

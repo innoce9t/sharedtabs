@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Makes the key that signs bridge updates. Run once, by the person who publishes releases.
 import fs from 'node:fs';
 import os from 'node:os';

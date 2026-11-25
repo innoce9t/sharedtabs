@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // What goes into the bridge download.
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -16,7 +17,8 @@ export function bundleFiles({ version, repo = '', publicKey = '' }) {
     for (const f of fs.readdirSync(path.join(ROOT, dir)).sort()) if (f.endsWith('.mjs')) files.set(`${dir}/${f}`, fs.readFileSync(path.join(ROOT, dir, f)));
   }
   files.set('extension/tools.js', fs.readFileSync(path.join(ROOT, 'extension', 'tools.js')));
-  files.set('LICENSE.txt', fs.readFileSync(path.join(ROOT, 'LICENSE.txt')));
+  // One file, because copies already installed accept only this name.
+  files.set('LICENSE.txt', Buffer.from(['ADDITIONAL-TERMS.md', 'LICENSE'].map((f) => fs.readFileSync(path.join(ROOT, f), 'utf8').trim()).join(`\n\n${'='.repeat(78)}\n\n`) + '\n'));
   files.set('extension-id.txt', fs.readFileSync(path.join(ROOT, 'extension-id.txt')));
   files.set('package.json', Buffer.from(JSON.stringify({
     name: PRODUCT, version, private: true, type: 'module', engines: { node: '>=20' },

@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 

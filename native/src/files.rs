@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 //! Decides which files agents may upload, and reads them. The settings come from the extension.
 use crate::util::{pcw, wide};
 use regex_lite::Regex;

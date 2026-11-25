@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 //! Signed updates from GitHub Releases. Nothing here runs by itself: the user opens the updater and confirms.
 //! The signature is the only thing trusted, not GitHub and not the network.
 use crate::install;

@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Node cannot set a security descriptor on a named pipe, so a short PowerShell step replaces it:
 // full control for the current user, network logons denied, nobody else listed.
 import { spawn } from 'node:child_process';

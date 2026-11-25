@@ -395,12 +395,27 @@ globalThis.__hermes ??= (() => {
 
   // Whether a real press has reached this document since the last arm().
   let pressed = null; // null until armed, so a page reached by the click itself never warns
-  for (const t of ['pointerdown', 'mousedown']) addEventListener(t, (e) => { if (e.isTrusted && pressed === false) pressed = true; }, { capture: true, passive: true });
+  let aimed = null; // the element the press is meant for
+  let astray = false;
+  for (const t of ['pointerdown', 'mousedown']) {
+    addEventListener(t, (e) => {
+      if (!e.isTrusted || pressed !== false) return;
+      pressed = true;
+      const hit = e.composedPath()[0];
+      const el = aimed?.deref();
+      astray = !!el?.isConnected && !contains(el, hit) && !contains(hit, el) && !(el.labels && [...el.labels].some((l) => contains(l, hit)));
+    }, { capture: true, passive: true });
+  }
+  // Where the pointer was last seen. A frame that was just loaded or scrolled may not be receiving input yet.
+  let pointer = null;
+  for (const t of ['pointermove', 'mousemove']) addEventListener(t, (e) => { if (e.isTrusted) pointer = { x: e.clientX, y: e.clientY }; }, { capture: true, passive: true });
 
   return {
     present: (ref) => !!byRef.get(ref)?.deref()?.isConnected,
-    arm: () => { pressed = false; },
-    wasPressed: () => pressed,
+    arm: (ref) => { pressed = false; astray = false; aimed = ref ? byRef.get(ref) : null; },
+    wasPressed: () => ({ pressed, astray }),
+    forgetPointer: () => { pointer = null; },
+    pointerAt: () => pointer,
     expectChild, callParent, childPoint, pointInChild, childFocused, fileInput, setFiles,
     dropFiles, search, indicate, hideIndicator,
     read, text, locate, focusInfo, selectAll, setValue,

@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Builds dist/site/sharedtabs: plain files to put in the website's public folder, served at /sharedtabs/.
 // File names carry a hash of their contents, because the website caches CSS for a year.
 import crypto from 'node:crypto';

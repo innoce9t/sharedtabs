@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Builds the Chrome Web Store package in dist/. The store build differs from the development copy:
 // no manifest key (the store assigns the ID), and no tool for running JavaScript supplied by agents.
 import fs from 'node:fs';

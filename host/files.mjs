@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Decides which files Hermes may upload, and reads them. The settings come from the extension.
 import fs from 'node:fs';
 import path from 'node:path';

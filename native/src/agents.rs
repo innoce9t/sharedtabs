@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 //! Connecting AI agents on this computer to the bridge. Only the ones the user ticks are touched.
 use crate::util::home;
 use serde_json::{json, Map, Value};

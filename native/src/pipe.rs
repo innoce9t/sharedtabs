@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 //! Named pipes, opened for overlapped use so one thread can read while another writes.
 use crate::util::{pcw, wide};
 use std::io;

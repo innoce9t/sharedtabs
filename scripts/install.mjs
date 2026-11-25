@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Sets up the bridge for the current Windows user. No administrator rights are used.
 //   (no options)     asks which agents to connect
 //   --json           asks nothing and prints one JSON object; connects nothing unless told to

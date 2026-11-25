@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Installs, updates, breaks and removes the Windows bridge for real, in a throwaway folder and registry key,
 // with programs signed by a throwaway key and a stand-in for GitHub Releases. Takes a few minutes: it builds
 // several versions. Never touches a real installation.

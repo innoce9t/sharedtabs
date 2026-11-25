@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Animations and the interactive demo. Everything is readable without this file,
 // and with "reduce motion" turned on the demo still works, with instant changes.
 const { gsap, ScrollTrigger } = window;

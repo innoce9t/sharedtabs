@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Builds the Windows setup program and its description in dist/release. Sign it with: npm run release:sign
 import crypto from 'node:crypto';
 import fs from 'node:fs';

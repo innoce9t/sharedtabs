@@ -154,17 +154,19 @@ Then remove the extension in `chrome://extensions`.
 
 ## Licence
 
-Source-available, not open source. [LICENSE.txt](LICENSE.txt) has the full terms ([PolyForm Noncommercial 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0), plus a permission for official releases):
+Copyright (C) 2026 [Ahsan Nawazish](https://ahsan.live/). Open source under the [GNU AGPL 3.0](LICENSE), with [additional terms](ADDITIONAL-TERMS.md). In short:
 
 | | |
 |---|---|
-| Use, change and share the code noncommercially | Yes, keeping the credit and licence |
-| Use the official, unmodified app at work | Yes |
-| Sell it, put it in a paid product or service, or use changed copies commercially | No. Ask first: hello@ahsan.live |
+| Use it, at home or at work | Yes |
+| Change it and share it, including commercially | Yes, if you give people the source under the same licence |
+| Make a closed-source version and distribute it, or offer it over a network | No. Ask about a commercial licence: hello@ahsan.live |
+| Credit | Keep the notices, and show "SharedTabs, built by Ahsan Nawazish (https://ahsan.live)" in anything that contains it and has an interface |
+| Name and logo | Changed versions must be marked as changed, and not called the official SharedTabs |
 
-If you share a copy or something based on it, include the licence and the "Required Notice" lines that credit Ahsan Nawazish.
+The files are the licence; this table only summarises them. GSAP in `site/vendor` is not covered; it has [its own terms](https://gsap.com/standard-license).
 
-GSAP in `site/vendor` is not covered; it has [its own terms](https://gsap.com/standard-license).
+By sending code, you agree that Ahsan Nawazish may publish it under this licence and under other licences too.
 
 ## Security and help
 

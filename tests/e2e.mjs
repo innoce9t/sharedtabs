@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // End to end: MCP server -> named pipe -> native host -> extension -> pages, in Chrome for Testing
 // with a throwaway profile. Set CHROME_FOR_TESTING to its chrome.exe. Registers the host under
 // "Chrome for Testing" only, and removes it afterwards.
@@ -59,6 +60,7 @@ const server = http.createServer((q, r) => {
     a.onfocus=()=>setTimeout(()=>{h.innerHTML='<input id=n2 placeholder=New>';n2.oninput=()=>{o.textContent='got '+n2.value};n2.focus()},300);
     b.onfocus=()=>setTimeout(()=>{h2.innerHTML='<input id=p2 type=password>';p2.focus()},150);
     c.onfocus=()=>setTimeout(()=>{c.remove();far.focus()},150);d.oninput=()=>d.remove();far.oninput=()=>{o.textContent='far '+far.value}</script>`); }
+  if (q.url === '/trap') { r.setHeader('content-type', 'text/html'); return r.end('<!doctype html><title>Trap</title><body style="margin:40px"><button id=b onclick="o.textContent=1">Real button</button><p id=o></p><div id=v style="display:none;position:fixed;inset:0;background:#eee">veil</div><script>addEventListener("mousedown",()=>{});addEventListener("pointermove",()=>setTimeout(()=>{v.style.display="block"},0))</script>'); }
   if (q.url === '/busy') { r.setHeader('content-type', 'text/html'); return r.end('<!doctype html><title>Busy</title><body style="margin:0"><canvas id=c width=1900 height=4000></canvas><script>const g=c.getContext("2d"),d=g.createImageData(1900,4000);for(let i=0;i<d.data.length;i++)d.data[i]=i%4===3?255:Math.random()*256;g.putImageData(d,0,0)</script>'); }
   if (q.url === '/play') { r.setHeader('content-type', 'text/html'); return r.end(`<!doctype html><title>Play</title><style>#menu{display:none}#m:hover #menu{display:block}</style><body style="margin:20px">
     <div id=m><button>Products</button><div id=menu>secret menu</div></div>
@@ -560,6 +562,13 @@ try {
     assert.match((await mcp.tool('wait', { tabId: tab, text: 'frame words', seconds: 1 })).text, /is on the page/);
     const s = await mcp.tool('press_key', { tabId: tab, key: 'Escape' });
     assert.equal(s.error, false, s.text);
+  });
+  await step('a click taken by something that appeared is not called a success', async () => {
+    await go('/trap');
+    const c = await mcp.tool('click', { tabId: tab, ref: refOf(await read(), 'Real button') });
+    assert.match(c.text, /Something else on the page received the click|covered by/);
+    await go('/job');
+    await until(async () => (await read()).includes('frame words'), 'frame read');
   });
   await step('taking the embedded site away stops it at once', async () => {
     const t = await read();

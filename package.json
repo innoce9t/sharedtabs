@@ -1,11 +1,11 @@
 {
   "name": "hermes-chrome",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "private": true,
   "type": "module",
   "description": "Lets AI agents on your computer use only the Chrome tabs you share",
   "author": "Ahsan Nawazish (https://ahsan.live)",
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "license": "AGPL-3.0-only",
   "engines": { "node": ">=20" },
   "scripts": {
     "setup": "node scripts/install.mjs",

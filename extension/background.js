@@ -580,7 +580,54 @@ async function settledDocAtPoint(tabId, x, y) {
 
 /** Last check before a press: the point must still belong to the document that was checked. */
 async function confirmPoint(tabId, d, x, y) {
-  if ((await docAtPoint(tabId, x, y)).documentId !== d.documentId) throw new Error('The page moved before the click. Try again.');
+  const now = await docAtPoint(tabId, x, y);
+  if (now.documentId !== d.documentId) throw new Error('The page moved before the click. Try again.');
+  return now.pt;
+}
+
+/**
+ * Moves the pointer there and waits for the document to notice. Chrome can drop the first input to a
+ * frame that has just loaded, or send it to where the frame was before scrolling. Moving is harmless
+ * to repeat; pressing is not, so nothing is pressed until a move has arrived.
+ */
+async function aim(tabId, st, d, pt, x, y, modifiers) {
+  await inPage(tabId, 'forgetPointer', [], d.documentId);
+  const end = Date.now() + (d.parent ? 5000 : 2500);
+  for (let i = 0; ; i++) {
+    if (st.dialog) return true;
+    if (i) {
+      await wake(tabId);
+      await sendInput(tabId, st, 'Input.dispatchMouseEvent', { type: 'mouseMoved', x: x - 1, y, modifiers });
+    }
+    await sendInput(tabId, st, 'Input.dispatchMouseEvent', { type: 'mouseMoved', x, y, modifiers });
+    for (let k = 0; k < 3; k++) {
+      if (st.dialog) return true;
+      const { ok: p } = await inPage(tabId, 'pointerAt', [], d.documentId);
+      if (p && Math.abs(p.x - pt.x) < 3 && Math.abs(p.y - pt.y) < 3) return true;
+      await sleep(40);
+    }
+    if (Date.now() > end) return false;
+    await sleep(120);
+  }
+}
+
+/** Everything that must hold just before a press, checked again after aiming, since aiming can take a while. */
+async function ready(ctx, tabId, st, d, x, y, { ref, modifiers = 0 } = {}) {
+  await gateDoc(ctx, tabId, d);
+  const pt = await confirmPoint(tabId, d, x, y);
+  live(ctx);
+  await showMark(tabId, x, y);
+  const t0 = Date.now();
+  if (!(await aim(tabId, st, d, pt, x, y, modifiers)) && d.parent) {
+    throw new Error('The embedded page is not receiving the pointer yet, so nothing was pressed. Try again in a moment.');
+  }
+  if (ref !== undefined && Date.now() - t0 > 250 && !st.dialog) {
+    const l = (await inPage(tabId, 'locate', [ref, false], d.documentId)).ok;
+    if (!samePoint(await toTop(tabId, d, l), { x, y })) throw new Error('The page moved before the click. Try again.');
+  }
+  await gateDoc(ctx, tabId, d);
+  await confirmPoint(tabId, d, x, y);
+  live(ctx);
 }
 
 /** The innermost document that has focus, and what is focused there. */
@@ -695,13 +742,13 @@ async function wake(tabId) {
 async function landed(tabId, st, d) {
   if (st.dialog) return '';
   const r = await inPage(tabId, 'wasPressed', [], d.documentId).catch(() => null);
-  return r && r.ok === false ? ' The page did not register the click. Check the page before trying again.' : '';
+  if (r?.ok?.pressed === false) return ' The page did not register the click. Check the page before trying again.';
+  return r?.ok?.astray ? ' Something else on the page received the click. Check the page before trying again.' : '';
 }
 
+/** Presses where ready() has just aimed. */
 async function clickAt(tabId, st, x, y, button = 'left', clicks = 1, modifiers = 0) {
-  await showMark(tabId, x, y);
   const at = { x, y, modifiers }; // CSS pixels; Chrome applies the page zoom itself
-  await sendInput(tabId, st, 'Input.dispatchMouseEvent', { type: 'mouseMoved', ...at });
   for (let i = 1; i <= clicks && !st.dialog; i++) {
     const b = { ...at, button, clickCount: i };
     await sendInput(tabId, st, 'Input.dispatchMouseEvent', { type: 'mousePressed', buttons: button === 'left' ? 1 : 2, ...b });
@@ -774,9 +821,7 @@ async function throughPicker(ctx, tabId, d, ref, payload) {
   const opened = new Promise((r) => { st.chooser = r; });
   await send(tabId, 'Page.setInterceptFileChooserDialog', { enabled: true });
   try {
-    await gateDoc(ctx, tabId, d);
-    await confirmPoint(tabId, d, pt.x, pt.y);
-    live(ctx);
+    await ready(ctx, tabId, st, d, pt.x, pt.y, { ref });
     await clickAt(tabId, st, pt.x, pt.y);
     const c = await Promise.race([opened, sleep(5000)]);
     if (!c) throw new Error('That element did not open a file picker.');
@@ -878,9 +923,8 @@ const TAB_TOOLS = {
       if ((await inPage(tabId, 'fileInput', [ref], rd.documentId)).ok.file) throw new Error('That is a file input. Use upload_file.');
     }
     const t = await resolveTarget(tabId, { ref, x, y });
-    await inPage(tabId, 'arm', [], t.d.documentId);
-    await gateDoc(ctx, tabId, t.d);
-    await confirmPoint(tabId, t.d, t.x, t.y);
+    await ready(ctx, tabId, st, t.d, t.x, t.y, { ref, modifiers: bits });
+    if (!st.dialog) await inPage(tabId, 'arm', [ref], t.d.documentId);
     live(ctx);
     await clickAt(tabId, st, t.x, t.y, button, clicks ?? (double ? 2 : 1), bits);
     const warning = await landed(tabId, st, t.d);
@@ -892,11 +936,7 @@ const TAB_TOOLS = {
   async hover(ctx, { tabId, ref, x, y }) {
     const st = await attach(tabId);
     const t = await resolveTarget(tabId, { ref, x, y });
-    await gateDoc(ctx, tabId, t.d);
-    await confirmPoint(tabId, t.d, t.x, t.y);
-    live(ctx);
-    await showMark(tabId, t.x, t.y);
-    await sendInput(tabId, st, 'Input.dispatchMouseEvent', { type: 'mouseMoved', x: t.x, y: t.y });
+    await ready(ctx, tabId, st, t.d, t.x, t.y);
     await sleep(400);
     ctx.at = t;
     return `Hovering at ${Math.round(t.x)}, ${Math.round(t.y)}.${dialogNote(st)}`;
@@ -915,11 +955,9 @@ const TAB_TOOLS = {
       await checkPoint(tabId, toX, toY);
       to = { x: toX, y: toY };
     }
-    await gateDoc(ctx, tabId, from.d);
-    await confirmPoint(tabId, from.d, from.x, from.y);
+    await ready(ctx, tabId, st, from.d, from.x, from.y);
     await confirmPoint(tabId, from.d, to.x, to.y);
     live(ctx);
-    await showMark(tabId, from.x, from.y);
     const mouse = (type, p, extra = {}) => sendInput(tabId, st, 'Input.dispatchMouseEvent', { type, x: p.x, y: p.y, button: 'left', ...extra });
     st.drag = null;
     await send(tabId, 'Input.setInterceptDrags', { enabled: true });
@@ -981,9 +1019,7 @@ const TAB_TOOLS = {
       const d = await docForRef(tabId, ref);
       const pt = await pointForRef(tabId, d, ref);
       if (pt.sensitive) throw new Error(`That is a ${pt.sensitive}. Ask the user to fill it in.`);
-      await gateDoc(ctx, tabId, d);
-      await confirmPoint(tabId, d, pt.x, pt.y);
-      live(ctx);
+      await ready(ctx, tabId, st, d, pt.x, pt.y, { ref });
       await clickAt(tabId, st, pt.x, pt.y);
       at = pt.local;
     }

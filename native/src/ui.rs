@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 //! The setup window: one small dark window that shows a page of text, tick boxes and buttons.
 //! Real Windows controls are used underneath, so keyboard and screen readers work.
 use crate::util::{pcw, wide};

@@ -92,6 +92,6 @@ If it says *"This copy has no update address"*, download the newest zip and unzi
 
 Help: [ahsan.live/sharedtabs](https://ahsan.live/sharedtabs) · hello@ahsan.live
 
-Built by [Ahsan Nawazish](https://ahsan.live/). Free to use, including at work. The code may be changed and shared noncommercially, with credit: see `LICENSE.txt`. Source: [github.com/innoce9t/sharedtabs](https://github.com/innoce9t/sharedtabs)
+Built by [Ahsan Nawazish](https://ahsan.live/). Open source under the GNU AGPL 3.0, with credit terms: see `LICENSE.txt`. Source: [github.com/innoce9t/sharedtabs](https://github.com/innoce9t/sharedtabs)
 
 SharedTabs is an independent project. It is not made or endorsed by Google or by the makers of any AI agent.

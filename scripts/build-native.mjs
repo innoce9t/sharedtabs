@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Builds the Windows bridge, native/target/release/sharedtabs.exe, which is also its own installer.
 // The built-in tool list comes from extension/tools.js, and the update address and key from store/.
 import { spawnSync } from 'node:child_process';

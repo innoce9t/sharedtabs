@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Connecting AI agents on this computer to the bridge. Only the ones named by the user are touched.
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';

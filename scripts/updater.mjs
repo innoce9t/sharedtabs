@@ -1,3 +1,4 @@
+// SharedTabs. Copyright (C) 2026 Ahsan Nawazish. SPDX-License-Identifier: AGPL-3.0-only. Additional terms: ADDITIONAL-TERMS.md (LICENSE.txt in the download)
 // Installs a newer bridge from a signed GitHub Release. Nothing here runs by itself: scripts/update.mjs
 // calls it when the user asks. The signature is the only thing trusted, not GitHub and not the network.
 import { spawn, spawnSync } from 'node:child_process';
