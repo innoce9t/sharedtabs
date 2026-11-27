@@ -53,6 +53,7 @@ If you move this folder or update Node to a new location, run step 1 again.
 - **Embedded forms** work when the embedded site is covered by Site permission too. For example, a company page with a Greenhouse form needs both sites. The agent is told which embedded sites were left out.
 
 - **Side panel** (from the popup): live activity with the name each agent gives itself, sharing, Stop and recording.
+- **MCP context and activity**: `get_shared_context` reads an allowed shared tab as visible text or an outline with element references. `get_activity` returns recent SharedTabs actions across connected agents with tool names, timestamps, tab IDs when available, duration, and success or failure.
 - **Recording:** ask the agent, or use the side panel. Each action adds a frame (up to 80). GIFs are saved in your Downloads folder and are limited to pages agents may use. They show whatever is on the page.
 - **Indicator:** tabs show a border and pointer while an agent uses them. Turn it off in Settings.
 - **Other agents:** any local agent that runs MCP servers over stdio can use `mcp/server.mjs`. All agents share one set of permissions.

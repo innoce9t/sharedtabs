@@ -152,7 +152,7 @@ async function onRequest(p, m) {
     res = { ok: false, error: String(e?.message || e) };
   }
   running.delete(m.id);
-  if (m.method !== 'status' && m.method !== 'tools') {
+  if (m.method !== 'status' && m.method !== 'tools' && m.method !== 'get_activity') {
     activity.unshift({ t: started, client: m.client || '', tool: m.method, tabId: m.params?.tabId, host: ctx.host, ok: res.ok, ms: Date.now() - started, error: res.ok ? '' : res.error.slice(0, 160) });
     activity.length = Math.min(activity.length, 200);
   }
@@ -873,6 +873,13 @@ const TAB_TOOLS = {
   },
   get_text: (ctx, { tabId, maxChars = 20000 }) => readAll(ctx, tabId, 'text', {}, maxChars, (r) => r.text),
 
+  async get_shared_context(ctx, { tabId, format = 'text', maxChars }) {
+    const args = { tabId, maxChars };
+    const page = await (format === 'outline' ? TAB_TOOLS.read_page(ctx, args) : TAB_TOOLS.get_text(ctx, args));
+    await gate(ctx, tabId);
+    return { tabId, format, page };
+  },
+
   async screenshot(ctx, { tabId, scale = 1 }) {
     const st = await attach(tabId);
     if (st.dialog) throw new Error(`A dialog is open (${describe(st.dialog)}). Use handle_dialog first.`);
@@ -1188,6 +1195,12 @@ async function dispatch(ctx, method, params) {
   }
   await requireOn(ctx);
 
+  if (method === 'get_activity') {
+    return activity.filter(({ tool }) => TOOLS.some((definition) => definition.name === tool))
+      .slice(0, params.limit ?? 25)
+      .map(({ t, tool, tabId, ok, ms }) => ({ timestamp: new Date(t).toISOString(), tool, tabId: Number.isInteger(tabId) ? tabId : undefined, ok, durationMs: ms }));
+  }
+
   if (method === 'list_tabs') {
     const out = [];
     for (const groupId of (await getSession()).groups) {
@@ -1216,6 +1229,36 @@ async function dispatch(ctx, method, params) {
     live(ctx);
     await chrome.tabs.remove(params.tabId);
     return 'Closed.';
+  }
+
+  if (method === 'tab_activate') {
+    const { tab } = await gate(ctx, params.tabId);
+    await chrome.tabs.update(tab.id, { active: true });
+    await gate(ctx, tab.id);
+    await chrome.windows.update(tab.windowId, { focused: true });
+    return await tabSummary(tab.id);
+  }
+
+  if (method === 'tab_group' || method === 'tab_ungroup') {
+    const tabIds = method === 'tab_group' ? [...new Set(params.tabIds)] : [params.tabId];
+    return updateSession(async (session) => {
+      const tabs = [];
+      for (const id of tabIds) {
+        if (!session.agentTabs.includes(id)) throw new Error('Agents can only group or ungroup tabs they opened.');
+        tabs.push((await gate(ctx, id)).tab);
+      }
+      if (method === 'tab_ungroup') {
+        await chrome.tabs.ungroup(tabIds);
+        await detach(tabIds[0]);
+        return 'Ungrouped. The tab is no longer shared.';
+      }
+      const { windowId } = tabs[0];
+      if (tabs.some((tab) => tab.windowId !== windowId)) throw new Error('All tabs must be in the same window.');
+      const groupId = await chrome.tabs.group({ tabIds, createProperties: { windowId } });
+      session.groups.push(groupId);
+      await chrome.tabGroups.update(groupId, { title: 'SharedTabs', color: 'blue' }).catch(() => {});
+      return { groupId, tabIds };
+    });
   }
 
   if (!Object.hasOwn(TAB_TOOLS, method)) throw new Error(`Unknown tool: ${method}`);

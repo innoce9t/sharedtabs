@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SharedTabs",
-  "version": "0.8.3",
+  "version": "0.9.0",
   "description": "Let AI agents on your computer use only the Chrome tabs you share, on sites you allow. Works with any local MCP agent.",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwha5Sod/yxnt1Poozy1Aym0YJqsbPND9SS0Pqq9HIxCDUg21ZkXkENHuSKD8OMJc5ffkBX7YnmP0ZOkeVve1FDNVvYkqTrozCxj8hiP5PMX7Tnnq41WFYKj4ulMZwCTGzSY20oY3aYOxoA8k3wGXWRTz/k13XPPgBmjwb/afjfKJSIRnO4nhIdkwNSjYKWxIlLzEihGbolLvAr6OuxEI2JxKFAWgRMVzcQ2hB78TE/HcPs90Mwwjt7/fZ1gqLE6DrRs/rGDYbsss4N6JZ9PmVzJ9Q3NoLYiYUxXl0uo4YwrOPGneaSDKC/x6t9d74+R7qML70LSSWSHSFsFSFnvZfQIDAQAB",
   "minimum_chrome_version": "120",

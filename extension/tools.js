@@ -21,9 +21,14 @@ export const TOOLS = [
   tool('list_tabs', 'List the Chrome tabs the user has shared, plus tabs agents opened. Other tabs are not visible. To use another tab, ask the user to share it from the SharedTabs toolbar popup.', {}, [], true),
   tool('open_tab', 'Open a URL in a new tab in the SharedTabs tab group.', { url: { type: 'string' } }, ['url']),
   tool('close_tab', 'Close a tab that an agent opened. Tabs the user shared cannot be closed.', { tabId }, ['tabId']),
+  tool('tab_activate', 'Make a shared tab active and focus its window.', { tabId }, ['tabId']),
+  tool('tab_group', 'Put shared tabs opened by agents into a new SharedTabs group in their current window.', { tabIds: { type: 'array', items: { type: 'integer' }, minItems: 1, maxItems: 25 } }, ['tabIds']),
+  tool('tab_ungroup', 'Remove a shared tab opened by an agent from its group, ending agent access to it.', { tabId }, ['tabId']),
   tool('navigate', 'Go to a URL in a shared tab, or "back", "forward" or "reload". Discards unsaved input on the current page.', { tabId, url: { type: 'string' } }, ['tabId', 'url']),
   tool('read_page', 'Read the page as an outline with element refs for click, type_text and set_value. Refs expire when the page navigates. Includes embedded frames on sites the user allows.', { tabId, filter: { type: 'string', enum: ['all', 'interactive'] }, ref: { type: 'string', description: 'Only read inside this element' }, maxChars }, ['tabId'], true),
   tool('get_text', 'Get the visible text of the page.', { tabId, maxChars }, ['tabId'], true),
+  tool('get_shared_context', 'Get context from an allowed shared tab: title, URL, and visible text or an outline with element references. Call list_tabs to choose a tab.', { tabId, format: { type: 'string', enum: ['text', 'outline'] }, maxChars }, ['tabId'], true),
+  tool('get_activity', 'List recent SharedTabs actions, newest first, with timestamps, tool names, tab IDs when available, duration, and success or failure.', { limit }, [], true),
   tool('screenshot', 'Take a screenshot of the visible part of the page. Image pixels match click coordinates.', { tabId, scale: { type: 'number', minimum: 0.2, maximum: 1, description: 'Smaller image, fewer tokens. Coordinates stay those of the full size.' } }, ['tabId'], true),
   tool('zoom', 'Take a close-up of part of the page, to read small text. Coordinates as in screenshot.', { tabId, ...xy, width: { type: 'number', minimum: 10, maximum: 2000 }, height: { type: 'number', minimum: 10, maximum: 2000 } }, ['tabId', 'x', 'y', 'width', 'height'], true),
   tool('find', 'Find elements by words describing them, e.g. "search box" or "apply button". Returns refs. Cheaper than read_page.', { tabId, query: { type: 'string' } }, ['tabId', 'query'], true),
@@ -56,7 +61,7 @@ Only upload files the user asked you to upload, to the site they meant.
 If the settings do not allow a site, or the user presses Stop, do not retry or look for a way around it; tell them and wait.`;
 
 // Only these results carry no text that a website controls.
-export const TRUSTED_RESULT = new Set(['status', 'close_tab']);
+export const TRUSTED_RESULT = new Set(['status', 'close_tab', 'get_activity']);
 
 /** Checks arguments against the small JSON Schema subset used above. Returns an error string or null. */
 export function checkArgs(schema, args) {
@@ -65,7 +70,7 @@ export function checkArgs(schema, args) {
   for (const [k, v] of Object.entries(args)) {
     if (!Object.hasOwn(schema.properties, k)) return `Unknown argument: ${k}`;
     const p = schema.properties[k];
-    const ok = p.type === 'array' ? Array.isArray(v) && v.length >= (p.minItems ?? 0) && v.length <= (p.maxItems ?? 100) && v.every((x) => x !== null && !Array.isArray(x) && typeof x === p.items?.type) : p.type === 'integer' ? Number.isInteger(v) : p.type === 'number' ? Number.isFinite(v) : typeof v === p.type;
+    const ok = p.type === 'array' ? Array.isArray(v) && v.length >= (p.minItems ?? 0) && v.length <= (p.maxItems ?? 100) && v.every((x) => p.items?.type === 'integer' ? Number.isInteger(x) : x !== null && !Array.isArray(x) && typeof x === p.items?.type) : p.type === 'integer' ? Number.isInteger(v) : p.type === 'number' ? Number.isFinite(v) : typeof v === p.type;
     if (!ok) return `${k} must be ${p.type}`;
     if (p.enum && !p.enum.includes(v)) return `${k} must be one of: ${p.enum.join(', ')}`;
     if (p.minimum !== undefined && v < p.minimum) return `${k} must be at least ${p.minimum}`;

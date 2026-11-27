@@ -172,7 +172,7 @@ try {
     const own = await (await optionsPage()).eval(`import('./tools.js').then((m) => m.TOOLS.map((t) => t.name).sort().join())`);
     const { result } = await mcp.request('tools/list');
     assert.equal(result.tools.map((t) => t.name).sort().join(), own);
-    assert.equal(result.tools.length, process.env.EXTENSION_DIR ? 26 : 27);
+    assert.equal(result.tools.length, process.env.EXTENSION_DIR ? 31 : 32);
     const s = (await mcp.tool('status')).text;
     const v = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'))).version;
     assert.match(s, new RegExp(`"bridge": "${v}"`));
@@ -214,6 +214,24 @@ try {
     assert.equal(await page('approve'), null);
   });
   const read = async (args = {}) => (await mcp.tool('read_page', { tabId: tab, ...args })).text;
+  await step('shared context and recent activity are available through MCP', async () => {
+    for (const format of ['text', 'outline']) {
+      const context = await mcp.tool('get_shared_context', { tabId: tab, format });
+      assert.equal(context.error, false, context.text);
+      assert.match(context.text, /Untrusted web content/);
+      assert.match(context.text, /Some page text/);
+      assert.doesNotMatch(context.text, /hunter2/);
+    }
+    const result = await mcp.tool('get_activity', { limit: 1 });
+    assert.equal(result.error, false, result.text);
+    const entries = JSON.parse(result.text);
+    assert.equal(entries.length, 1);
+    assert.deepEqual(Object.keys(entries[0]).sort(), ['durationMs', 'ok', 'tabId', 'timestamp', 'tool']);
+    assert.equal(entries[0].tool, 'get_shared_context');
+    assert.equal(entries[0].tabId, tab);
+    assert.equal(entries[0].ok, true);
+    assert.deepEqual(JSON.parse((await mcp.tool('get_activity', { limit: 1 })).text), entries);
+  });
   await step('read page hides the password', async () => {
     const t = await read();
     assert.match(t, /Untrusted web content/);
@@ -321,7 +339,7 @@ try {
   });
   await step('redirect to a site that is not listed cannot be read', async () => {
     await mcp.tool('navigate', { tabId: tab, url: `${base}/redirect` });
-    for (const t of ['read_page', 'get_text', 'screenshot', 'read_console']) {
+    for (const t of ['read_page', 'get_text', 'get_shared_context', 'screenshot', 'read_console']) {
       const r = await mcp.tool(t, { tabId: tab });
       assert.equal(r.error, true, t);
       assert.doesNotMatch(r.text, /other site secret/);
@@ -661,6 +679,7 @@ try {
     await opt.eval(`chrome.runtime.sendMessage({ type: 'stop' })`);
     assert.match((await p).text, /pressed Stop|stopped/);
     assert.match((await mcp.tool('get_text', { tabId: tab })).text, /stopped agents/);
+    assert.match((await mcp.tool('get_activity')).text, /stopped agents/);
     assert.match((await mcp.tool('status')).text, /"stoppedByUser": true/);
     await opt.eval(`chrome.runtime.sendMessage({ type: 'resume' })`);
     assert.match((await mcp.tool('get_text', { tabId: tab })).text, /Some page text/);

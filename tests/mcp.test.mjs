@@ -12,7 +12,15 @@ test('MCP server without Chrome', async () => {
   try {
     const init = await mcp.request('initialize', { protocolVersion: '2025-03-26', capabilities: {}, clientInfo: { name: 't', version: '0' } });
     assert.equal(init.result.protocolVersion, '2025-03-26');
-    assert.equal((await mcp.request('tools/list')).result.tools.length, 27);
+    const { tools } = (await mcp.request('tools/list')).result;
+    assert.equal(tools.length, 32);
+    for (const name of ['tab_activate', 'tab_group', 'tab_ungroup', 'get_shared_context', 'get_activity']) {
+      assert.ok(tools.some((tool) => tool.name === name), `Missing tool: ${name}`);
+    }
+    assert.match((await mcp.tool('tab_group', { tabIds: ['1'] })).text, /must be array/);
+    assert.match((await mcp.tool('get_shared_context', {})).text, /Missing argument: tabId/);
+    assert.match((await mcp.tool('get_shared_context', { tabId: 1, format: 'html' })).text, /must be one of: text, outline/);
+    assert.match((await mcp.tool('get_activity', { limit: 201 })).text, /at most 200/);
     assert.equal(init.result.serverInfo.version, JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url))).version);
     assert.equal((await mcp.request('nope')).error.code, -32601);
     assert.match((await mcp.tool('click', {})).text, /Missing argument: tabId/);
